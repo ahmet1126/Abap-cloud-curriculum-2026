@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern ABAP / ABAP Cloud Öğrenme Müfredatı 2026</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #181c27;
+    --bg3: #1e2333;
+    --card: #1a1f2e;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.15);
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --blue: #3b82f6;
+    --blue-light: #93c5fd;
+    --blue-bg: rgba(59,130,246,0.12);
+    --teal: #14b8a6;
+    --teal-bg: rgba(20,184,166,0.12);
+    --amber: #f59e0b;
+    --amber-bg: rgba(245,158,11,0.12);
+    --green: #22c55e;
+    --green-bg: rgba(34,197,94,0.1);
+    --purple: #a78bfa;
+    --purple-bg: rgba(167,139,250,0.12);
+    --coral: #f97316;
+    --coral-bg: rgba(249,115,22,0.12);
+    --red: #ef4444;
+    --red-bg: rgba(239,68,68,0.1);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; font-size: 15px; line-height: 1.6; }
+
+  /* HEADER */
+  .header { background: linear-gradient(135deg, #0f1117 0%, #1a1f2e 50%, #0f1117 100%); border-bottom: 1px solid var(--border2); padding: 48px 32px 40px; text-align: center; position: relative; overflow: hidden; }
+  .header::before { content:''; position:absolute; top:-80px; left:50%; transform:translateX(-50%); width:600px; height:300px; background: radial-gradient(ellipse, rgba(59,130,246,0.15) 0%, transparent 70%); pointer-events:none; }
+  .cert-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--amber-bg); border: 1px solid rgba(245,158,11,0.3); border-radius: 20px; padding: 6px 16px; font-size: 12px; color: var(--amber); font-weight: 600; letter-spacing: 0.5px; margin-bottom: 20px; }
+  .header h1 { font-size: 32px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .header h1 span { color: var(--blue-light); }
+  .header-sub { color: var(--text2); font-size: 15px; margin-bottom: 28px; }
+  .header-stats { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-val { font-size: 24px; font-weight: 700; color: var(--blue-light); }
+  .stat-lbl { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* PROGRESS NAV */
+  .phase-nav { display: flex; overflow-x: auto; gap: 0; margin: 32px 0 40px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg2); padding: 6px; scrollbar-width: none; }
+  .phase-nav::-webkit-scrollbar { display: none; }
+  .phase-btn { flex: 1; min-width: 110px; padding: 8px 10px; border: none; background: transparent; color: var(--text2); font-size: 12px; font-weight: 500; cursor: pointer; border-radius: var(--radius-sm); transition: all .2s; text-align: center; white-space: nowrap; }
+  .phase-btn:hover { background: var(--bg3); color: var(--text); }
+  .phase-btn.active { background: var(--blue); color: #fff; }
+
+  /* SECTION HEADERS */
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding-top: 40px; }
+  .phase-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .phase-icon.blue { background: var(--blue-bg); }
+  .phase-icon.teal { background: var(--teal-bg); }
+  .phase-icon.amber { background: var(--amber-bg); }
+  .phase-icon.green { background: var(--green-bg); }
+  .phase-icon.purple { background: var(--purple-bg); }
+  .phase-icon.coral { background: var(--coral-bg); }
+  .phase-icon.red { background: var(--red-bg); }
+  .section-title { font-size: 22px; font-weight: 700; color: #fff; }
+  .section-meta { display: flex; align-items: center; gap: 10px; margin-top: 4px; flex-wrap: wrap; }
+  .badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .badge-blue { background: var(--blue-bg); color: var(--blue-light); border: 1px solid rgba(59,130,246,0.25); }
+  .badge-teal { background: var(--teal-bg); color: var(--teal); border: 1px solid rgba(20,184,166,0.25); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(245,158,11,0.25); }
+  .badge-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(34,197,94,0.25); }
+  .badge-purple { background: var(--purple-bg); color: var(--purple); border: 1px solid rgba(167,139,250,0.25); }
+  .badge-coral { background: var(--coral-bg); color: var(--coral); border: 1px solid rgba(249,115,22,0.25); }
+  .badge-red { background: var(--red-bg); color: var(--red); border: 1px solid rgba(239,68,68,0.25); }
+
+  /* MODULE CARDS */
+  .module-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 20px; overflow: hidden; transition: border-color .2s; }
+  .module-card:hover { border-color: var(--border2); }
+  .module-header { display: flex; align-items: center; gap: 14px; padding: 18px 20px; cursor: pointer; user-select: none; }
+  .module-number { width: 32px; height: 32px; border-radius: 8px; background: var(--bg3); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--text2); flex-shrink: 0; }
+  .module-title { font-size: 16px; font-weight: 600; color: #fff; flex: 1; }
+  .module-weeks { font-size: 12px; color: var(--text3); margin-left: auto; white-space: nowrap; }
+  .expand-icon { color: var(--text3); font-size: 18px; transition: transform .2s; flex-shrink: 0; margin-left: 8px; }
+  .module-card.open .expand-icon { transform: rotate(180deg); }
+  .module-body { display: none; border-top: 1px solid var(--border); }
+  .module-card.open .module-body { display: block; }
+
+  /* MODULE CONTENT */
+  .module-content { padding: 20px; }
+  .topics-list { list-style: none; margin-bottom: 20px; }
+  .topics-list li { display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; color: var(--text2); font-size: 14px; border-bottom: 1px solid var(--border); }
+  .topics-list li:last-child { border-bottom: none; }
+  .topic-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 6px; }
+
+  /* TASKS */
+  .tasks-section { background: var(--bg2); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px; }
+  .tasks-title { font-size: 13px; font-weight: 700; color: var(--blue-light); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .task-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .task-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .task-num { width: 22px; height: 22px; border-radius: 6px; background: var(--blue-bg); color: var(--blue-light); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .task-text { font-size: 13px; color: var(--text2); line-height: 1.5; }
+  .task-text strong { color: var(--text); }
+  code { background: var(--bg3); color: var(--blue-light); padding: 2px 6px; border-radius: 4px; font-size: 12px; font-family: 'Cascadia Code', 'Fira Code', monospace; }
+
+  /* HUB REFERENCE */
+  .hub-ref { display: flex; align-items: flex-start; gap: 12px; background: var(--teal-bg); border: 1px solid rgba(20,184,166,0.2); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 14px; }
+  .hub-icon { font-size: 16px; flex-shrink: 0; }
+  .hub-content { }
+  .hub-label { font-size: 11px; font-weight: 700; color: var(--teal); letter-spacing: 0.5px; margin-bottom: 4px; }
+  .hub-courses { display: flex; flex-wrap: wrap; gap: 6px; }
+  .hub-course { background: rgba(20,184,166,0.15); border: 1px solid rgba(20,184,166,0.3); border-radius: 6px; padding: 3px 10px; font-size: 12px; font-weight: 600; color: var(--teal); }
+
+  /* MENTOR TIP */
+  .mentor-tip { display: flex; align-items: flex-start; gap: 12px; background: var(--amber-bg); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-sm); padding: 14px; }
+  .mentor-icon { font-size: 18px; flex-shrink: 0; }
+  .mentor-content { }
+  .mentor-label { font-size: 11px; font-weight: 700; color: var(--amber); letter-spacing: 0.5px; margin-bottom: 4px; }
+  .mentor-text { font-size: 13px; color: #e2c98a; line-height: 1.5; }
+
+  /* CERT TABLE */
+  .cert-table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 40px; }
+  .cert-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .cert-table th { background: var(--bg3); color: var(--text2); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; padding: 10px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+  .cert-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+  .cert-table tr:last-child td { border-bottom: none; }
+  .cert-table td:first-child { color: var(--text); font-weight: 500; }
+  .weight-bar { height: 6px; background: var(--border); border-radius: 3px; margin-top: 6px; overflow: hidden; }
+  .weight-fill { height: 100%; border-radius: 3px; background: var(--blue); }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  /* TIMELINE */
+  .timeline { display: flex; gap: 0; overflow-x: auto; padding-bottom: 8px; margin-bottom: 40px; scrollbar-width: thin; }
+  .tl-item { flex: 1; min-width: 80px; text-align: center; position: relative; }
+  .tl-item::before { content: ''; position: absolute; top: 14px; left: 50%; right: -50%; height: 2px; background: var(--border); z-index: 0; }
+  .tl-item:last-child::before { display: none; }
+  .tl-dot { width: 28px; height: 28px; border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; position: relative; z-index: 1; }
+  .tl-lbl { font-size: 11px; color: var(--text3); line-height: 1.3; }
+  .tl-wk { font-size: 10px; color: var(--text3); }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .header { padding: 32px 20px 28px; }
+    .header h1 { font-size: 24px; }
+    .header-stats { gap: 20px; }
+    .container { padding: 0 16px 60px; }
+    .module-title { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="cert-badge">🎯 Hedef Sertifika: C_ABAPD_2507 — SAP Certified Associate ABAP Cloud Developer</div>
+  <h1>Modern <span>ABAP Cloud</span><br>Öğrenme Müfredatı 2026</h1>
+  <p class="header-sub">Sıfırdan sertifikaya — ezber değil kavrayış odaklı, hands-on yaklaşımla</p>
+  <div class="header-stats">
+    <div class="stat"><div class="stat-val">16</div><div class="stat-lbl">Hafta</div></div>
+    <div class="stat"><div class="stat-val">7</div><div class="stat-lbl">Faz</div></div>
+    <div class="stat"><div class="stat-val">40+</div><div class="stat-lbl">Hands-on Görev</div></div>
+    <div class="stat"><div class="stat-val">%100</div><div class="stat-lbl">Clean Core Odaklı</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- NAV -->
+  <div class="phase-nav">
+    <button class="phase-btn active" onclick="goToPhase('p1', this)">Faz 1 · Core ABAP</button>
+    <button class="phase-btn" onclick="goToPhase('p2', this)">Faz 2 · OOP</button>
+    <button class="phase-btn" onclick="goToPhase('p3', this)">Faz 3 · SQL</button>
+    <button class="phase-btn" onclick="goToPhase('p4', this)">Faz 4 · CDS</button>
+    <button class="phase-btn" onclick="goToPhase('p5', this)">Faz 5 · RAP</button>
+    <button class="phase-btn" onclick="goToPhase('p6', this)">Faz 6 · Clean Core</button>
+    <button class="phase-btn" onclick="goToPhase('p7', this)">Faz 7 · Sınav</button>
+  </div>
+
+  <!-- CERT WEIGHT TABLE -->
+  <h2 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:16px;">📊 Sınav Ağırlık Dağılımı (C_ABAPD_2507)</h2>
+  <div class="cert-table-wrap">
+    <table class="cert-table">
+      <thead>
+        <tr>
+          <th>Konu Alanı</th>
+          <th>Sınav Ağırlığı</th>
+          <th>Müfredattaki Fazlar</th>
+          <th>Öncelik</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Core ABAP Language & Syntax</td>
+          <td>~%12<div class="weight-bar"><div class="weight-fill" style="width:12%"></div></div></td>
+          <td>Faz 1</td>
+          <td><span class="badge badge-blue">Temel</span></td>
+        </tr>
+        <tr>
+          <td>Object-Oriented ABAP (OOP)</td>
+          <td>~%15<div class="weight-bar"><div class="weight-fill" style="width:15%;background:#a78bfa"></div></div></td>
+          <td>Faz 2</td>
+          <td><span class="badge badge-purple">Önemli</span></td>
+        </tr>
+        <tr>
+          <td>ABAP SQL & Code Pushdown</td>
+          <td>~%18<div class="weight-bar"><div class="weight-fill" style="width:18%;background:#14b8a6"></div></div></td>
+          <td>Faz 3</td>
+          <td><span class="badge badge-teal">Önemli</span></td>
+        </tr>
+        <tr>
+          <td>Core Data Services (CDS)</td>
+          <td>~%22<div class="weight-bar"><div class="weight-fill" style="width:22%;background:#f59e0b"></div></div></td>
+          <td>Faz 4</td>
+          <td><span class="badge badge-amber">Kritik ⚡</span></td>
+        </tr>
+        <tr>
+          <td>RAP (Business Object & OData)</td>
+          <td>~%25<div class="weight-bar"><div class="weight-fill" style="width:25%;background:#22c55e"></div></div></td>
+          <td>Faz 5</td>
+          <td><span class="badge badge-green">Kritik ⚡</span></td>
+        </tr>
+        <tr>
+          <td>Clean Core & Extensibility</td>
+          <td>~%8<div class="weight-bar"><div class="weight-fill" style="width:8%;background:#f97316"></div></div></td>
+          <td>Faz 6</td>
+          <td><span class="badge badge-coral">Önemli</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TIMELINE -->
+  <h2 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:16px;">📅 16 Haftalık Yol Haritası</h2>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--blue-bg);color:var(--blue-light);">1-2</div>
+      <div class="tl-lbl" style="color:var(--blue-light);">Core ABAP</div>
+      <div class="tl-wk">Hafta 1-2</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--purple-bg);color:var(--purple);">3-4</div>
+      <div class="tl-lbl" style="color:var(--purple);">OOP ABAP</div>
+      <div class="tl-wk">Hafta 3-4</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--teal-bg);color:var(--teal);">5-6</div>
+      <div class="tl-lbl" style="color:var(--teal);">ABAP SQL</div>
+      <div class="tl-wk">Hafta 5-6</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--amber-bg);color:var(--amber);">7-9</div>
+      <div class="tl-lbl" style="color:var(--amber);">CDS Views</div>
+      <div class="tl-wk">Hafta 7-9</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--green-bg);color:var(--green);">10-13</div>
+      <div class="tl-lbl" style="color:var(--green);">RAP</div>
+      <div class="tl-wk">Hafta 10-13</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--coral-bg);color:var(--coral);">14-15</div>
+      <div class="tl-lbl" style="color:var(--coral);">Clean Core</div>
+      <div class="tl-wk">Hafta 14-15</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--red-bg);color:var(--red);">16</div>
+      <div class="tl-lbl" style="color:var(--red);">Sınav Hazırlık</div>
+      <div class="tl-wk">Hafta 16</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ========== FAZ 1 ========== -->
+  <div id="p1">
+    <div class="section-header">
+      <div class="phase-icon blue">🧱</div>
+      <div>
+        <div class="section-title">Faz 1 — Core ABAP Temelleri</div>
+        <div class="section-meta">
+          <span class="badge badge-blue">Hafta 1-2</span>
+          <span style="font-size:12px;color:var(--text3);">Sınav Ağırlığı ~%12</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- M1.1 -->
+    <div class="module-card open">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">1.1</div>
+        <div class="module-title">ABAP Sözdizimi, Veri Tipleri ve Değişkenler</div>
+        <div class="module-weeks">Hafta 1 — 1. Gün</div>
+        <div class="expand-icon">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-content">
+          <ul class="topics-list">
+            <li><span class="topic-dot"></span>ABAP Workbench vs ADT (ABAP Development Tools) — Neden ADT kullanmalıyız?</li>
+            <li><span class="topic-dot"></span>Built-in Veri Tipleri: <code>i</code>, <code>p</code>, <code>f</code>, <code>n</code>, <code>c</code>, <code>string</code>, <code>d</code>, <code>t</code>, <code>xstring</code></li>
+            <li><span class="topic-dot"></span>Kullanıcı Tanımlı Tipler: <code>TYPES</code>, <code>DATA</code>, <code>CONSTANTS</code>, <code>FIELD-SYMBOLS</code></li>
+            <li><span class="topic-dot"></span>Inline Deklarasyon: <code>DATA(lv_var)</code>, <code>FINAL()</code> — Modern ABAP yaklaşımı</li>
+            <li><span class="topic-dot"></span>String Operasyonları: Concatenation, <code>|...|</code> string template, <code>SUBSTRING</code>, <code>STRLEN</code></li>
+          </ul>
+          <div class="tasks-section">
+            <div class="tasks-title">💻 Hands-on Görevler</div>
+            <div class="task-item">
+              <div class="task-num">1</div>
+              <div class="task-text"><strong>Veri Tipi Dönüşüm Lab'ı:</strong> Bir ABAP programı yaz; <code>DATS</code> tipindeki bugünün tarihini al, string template (<code>|{ lv_date }|</code>) kullanarak "Bugün: DD.MM.YYYY" formatında <code>string</code>'e dönüştür ve <code>cl_demo_output</code> ile ekrana bas. Inline DATA ile tüm değişkenleri tanımla.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">2</div>
+              <div class="task-text"><strong>Hesap Makinesi:</strong> İki <code>decfloat34</code> sayıyı kullanarak 4 aritmetik işlem yap. Sonuçları string template ile formatlı göster. <code>FINAL</code> keyword'ünü kullan ve programının neden daha güvenli olduğunu yoruma yaz.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">3</div>
+              <div class="task-text"><strong>String Analiz:</strong> Hardcoded bir metin gir. <code>FIND ALL OCCURRENCES OF</code> ile belirli bir kelimenin kaç kez geçtiğini bul. <code>REPLACE ALL OCCURRENCES</code> ile değiştir. Sonuçları karşılaştırmalı listele.</div>
+            </div>
+          </div>
+          <div class="hub-ref">
+            <div class="hub-icon">📚</div>
+            <div class="hub-content">
+              <div class="hub-label">SAP LEARNING HUB REFERANSI</div>
+              <div class="hub-courses">
+                <span class="hub-course">S4D400</span>
+                <span class="hub-course">Unit 2: ABAP Basic Statements</span>
+              </div>
+            </div>
+          </div>
+          <div class="mentor-tip">
+            <div class="mentor-icon">👨‍🏫</div>
+            <div class="mentor-content">
+              <div class="mentor-label">MENTOR TAVSİYESİ — SEKTÖRÜN EN BÜYÜK HATASI</div>
+              <div class="mentor-text">Yeni ABAP geliştiricilerinin %80'i hâlâ <code>DATA lv_var TYPE string.</code> şeklinde blok başında tanımlama yapıyor. Modern ABAP'ta <code>DATA(lv_result) = method_call( )</code> gibi inline deklarasyon kullan — hem okunabilirlik artar hem de scope yönetimi kolaylaşır. ABAP Cloud'da bu bir kural, tercih değil.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- M1.2 -->
+    <div class="module-card">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">1.2</div>
+        <div class="module-title">Kontrol Yapıları ve Modülarizasyon</div>
+        <div class="module-weeks">Hafta 1 — 2-3. Gün</div>
+        <div class="expand-icon">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-content">
+          <ul class="topics-list">
+            <li><span class="topic-dot"></span><code>IF / ELSEIF / CASE / CASE TYPE OF</code> — Nesne tipi kontrolü</li>
+            <li><span class="topic-dot"></span><code>DO / WHILE / LOOP AT</code> — Modern döngü kalıpları</li>
+            <li><span class="topic-dot"></span>Yerel Metotlar: <code>METHOD</code> tanımı, parametreler (<code>IMPORTING</code>, <code>EXPORTING</code>, <code>RETURNING</code>, <code>CHANGING</code>)</li>
+            <li><span class="topic-dot"></span>Subroutine'den metoda geçiş — Neden <code>FORM</code> kullanmamalıyız?</li>
+            <li><span class="topic-dot"></span>Fonksiyon Modülü kavramı ve ne zaman kullanılır (legacy context)</li>
+          </ul>
+          <div class="tasks-section">
+            <div class="tasks-title">💻 Hands-on Görevler</div>
+            <div class="task-item">
+              <div class="task-num">1</div>
+              <div class="task-text"><strong>Bonus Hesaplama Metodu:</strong> <code>calculate_bonus( iv_salary TYPE p iv_performance_score TYPE i )</code> imzalı bir metot yaz. Puana göre (<code>CASE</code> ile) farklı bonus yüzdeleri uygula. <code>RETURNING</code> değer döndür. Metodunu 5 farklı senaryoyla test et.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">2</div>
+              <div class="task-text"><strong>FizzBuzz ABAP Edition:</strong> 1-100 arası sayılar için FizzBuzz yaz ama metodu ayrı bir sınıfın metoduna taşı. <code>CASE</code> yerine <code>MOD</code> operatörü ve modern ABAP kullan. Sonuçları <code>VALUE #(...)</code> ile bir string tablosuna topla.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">3</div>
+              <div class="task-text"><strong>Refactoring Alıştırması:</strong> Bir <code>FORM</code> subroutine'ini bulup onu bir <code>METHODS</code> tanımına dönüştür. Parametre geçişlerinin nasıl değiştiğini belgele. (Eğer erişimin varsa standart kodda örnek bul, yoksa yapay bir örnek yaz.)</div>
+            </div>
+          </div>
+          <div class="hub-ref">
+            <div class="hub-icon">📚</div>
+            <div class="hub-content">
+              <div class="hub-label">SAP LEARNING HUB REFERANSI</div>
+              <div class="hub-courses">
+                <span class="hub-course">S4D400</span>
+                <span class="hub-course">Unit 3: Modularization</span>
+              </div>
+            </div>
+          </div>
+          <div class="mentor-tip">
+            <div class="mentor-icon">👨‍🏫</div>
+            <div class="mentor-content">
+              <div class="mentor-label">MENTOR TAVSİYESİ — CLEAN CODE</div>
+              <div class="mentor-text">ABAP Cloud'da <code>FORM</code> ve <code>PERFORM</code> syntax'ı yasaktır. Bunu sadece teori olarak öğren — 1 saatini geçirme. Tüm enerjini <code>METHODS</code> ve OOP'a ver. SAP'ın kendi geliştirmeleri artık sıfır <code>FORM</code> kullanıyor.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- M1.3 -->
+    <div class="module-card">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">1.3</div>
+        <div class="module-title">Internal Tables — ABAP'ın Kalbinde Ne Var?</div>
+        <div class="module-weeks">Hafta 1-2 — 4-7. Gün</div>
+        <div class="expand-icon">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-content">
+          <ul class="topics-list">
+            <li><span class="topic-dot"></span>Tablo Türleri: <code>STANDARD TABLE</code>, <code>SORTED TABLE</code>, <code>HASHED TABLE</code> — Performans farkları</li>
+            <li><span class="topic-dot"></span>Work Area vs Header Line — Neden header line kullanmıyoruz?</li>
+            <li><span class="topic-dot"></span>Tablo Operasyonları: <code>APPEND</code>, <code>INSERT</code>, <code>MODIFY</code>, <code>DELETE</code>, <code>COLLECT</code></li>
+            <li><span class="topic-dot"></span>Okuma: <code>READ TABLE ... WITH KEY</code>, <code>READ TABLE ... ASSIGNING FIELD-SYMBOL</code></li>
+            <li><span class="topic-dot"></span>Modern Constructor Expressions: <code>VALUE #(...)</code>, <code>CORRESPONDING #(...)</code>, <code>FILTER #(...)</code>, <code>REDUCE</code></li>
+            <li><span class="topic-dot"></span><code>LOOP AT ... WHERE</code>, <code>LOOP AT GROUP BY</code></li>
+          </ul>
+          <div class="tasks-section">
+            <div class="tasks-title">💻 Hands-on Görevler</div>
+            <div class="task-item">
+              <div class="task-num">1</div>
+              <div class="task-text"><strong>Çalışan Yönetim Sistemi:</strong> <code>ty_employee</code> (emp_id, name, department, salary) yapısını tanımla. <code>VALUE #(...)</code> ile 10 çalışan oluştur. <code>FILTER</code> ile sadece IT departmanını seç. <code>REDUCE</code> ile toplam maaşı hesapla. <code>HASHED TABLE WITH UNIQUE KEY emp_id</code> kullanarak O(1) arama yap.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">2</div>
+              <div class="task-text"><strong>GROUP BY Analizi:</strong> Yukarıdaki çalışan tablosunu <code>LOOP AT ... GROUP BY department</code> ile grupla. Her departman için çalışan sayısı ve ortalama maaşı hesapla. Sonuçları yeni bir özet tabloya yaz.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">3</div>
+              <div class="task-text"><strong>CORRESPONDING Dönüşümü:</strong> İki farklı yapı tanımla (<code>ty_source</code> ve <code>ty_target</code> — bazı alanlar aynı, bazıları farklı). <code>CORRESPONDING #( MAPPING ... EXCEPT ... )</code> ile dönüşüm yap. Hangi alanların otomatik eşleştiğini belgele.</div>
+            </div>
+          </div>
+          <div class="hub-ref">
+            <div class="hub-icon">📚</div>
+            <div class="hub-content">
+              <div class="hub-label">SAP LEARNING HUB REFERANSI</div>
+              <div class="hub-courses">
+                <span class="hub-course">S4D400</span>
+                <span class="hub-course">Unit 4: Internal Tables</span>
+                <span class="hub-course">Unit 5: Constructor Expressions</span>
+              </div>
+            </div>
+          </div>
+          <div class="mentor-tip">
+            <div class="mentor-icon">👨‍🏫</div>
+            <div class="mentor-content">
+              <div class="mentor-label">MENTOR TAVSİYESİ — PERFORMANS HATASI</div>
+              <div class="mentor-text">ABAP geliştiricilerinin yaptığı en pahalı hata: büyük tablolarda <code>READ TABLE STANDARD TABLE WITH KEY</code> kullanmak — bu O(n) lineer arama yapar. Key üzerinden hızlı okuma gerekiyorsa <code>HASHED TABLE</code>, sıralı erişim + binary search gerekiyorsa <code>SORTED TABLE WITH UNIQUE KEY</code> kullan. Bu bilgi sınavda doğrudan sorulur.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- M1.4 -->
+    <div class="module-card">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">1.4</div>
+        <div class="module-title">Exception Handling — Sınıf Tabanlı İstisnalar</div>
+        <div class="module-weeks">Hafta 2</div>
+        <div class="expand-icon">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-content">
+          <ul class="topics-list">
+            <li><span class="topic-dot"></span>Exception Hiyerarşisi: <code>CX_ROOT</code>, <code>CX_STATIC_CHECK</code>, <code>CX_DYNAMIC_CHECK</code>, <code>CX_NO_CHECK</code></li>
+            <li><span class="topic-dot"></span><code>TRY / CATCH / CLEANUP / ENDTRY</code> blokları</li>
+            <li><span class="topic-dot"></span>Kendi Exception Sınıfını Yazmak — ADT ile exception class oluşturma</li>
+            <li><span class="topic-dot"></span><code>RAISE EXCEPTION TYPE</code> vs <code>RAISE EXCEPTION NEW</code> (Modern)</li>
+            <li><span class="topic-dot"></span>SY-SUBRC yaklaşımı vs exception — Ne zaman hangisini kullan?</li>
+          </ul>
+          <div class="tasks-section">
+            <div class="tasks-title">💻 Hands-on Görevler</div>
+            <div class="task-item">
+              <div class="task-num">1</div>
+              <div class="task-text"><strong>Custom Exception Sınıfı:</strong> <code>ZCX_INVALID_INPUT</code> adında <code>CX_STATIC_CHECK</code>'ten türeyen bir exception sınıfı oluştur. Içinde <code>get_text( )</code> override et. Bunu bir bölme metodunda kullan — sıfıra bölme durumunu yakala ve anlamlı mesaj fırlat.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">2</div>
+              <div class="task-text"><strong>Exception Zinciri:</strong> Düşük seviyeli bir exception'ı (<code>CX_SY_CONVERSION_ERROR</code>) yakala ve kendi <code>ZCX_BUSINESS_ERROR</code>'una sararak yukarı fırlat (<code>PREVIOUS</code> parametresiyle). <code>CLEANUP</code> bloğunda açık kaynakları (örn. bir string buffer) temizle.</div>
+            </div>
+          </div>
+          <div class="hub-ref">
+            <div class="hub-icon">📚</div>
+            <div class="hub-content">
+              <div class="hub-label">SAP LEARNING HUB REFERANSI</div>
+              <div class="hub-courses">
+                <span class="hub-course">S4D400</span>
+                <span class="hub-course">Unit 6: Exception Handling</span>
+              </div>
+            </div>
+          </div>
+          <div class="mentor-tip">
+            <div class="mentor-icon">👨‍🏫</div>
+            <div class="mentor-content">
+              <div class="mentor-label">MENTOR TAVSİYESİ</div>
+              <div class="mentor-text">RAP geliştirmede <code>RAISE EXCEPTION NEW zcx_...</code> syntax'ı zorunludur. Eski <code>RAISE EXCEPTION TYPE</code> hâlâ çalışır ama kodun tutarsız görünür. Daha önemlisi: RAP'ta exception fırlatmak yerine genelde <code>APPEND VALUE #( ... ) TO reported-entity_name.</code> ve <code>failed</code> tablosunu doldurursun — bunu Faz 5'te öğreneceksin, zihninde bir köşeye not et.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ========== FAZ 2 ========== -->
+  <div id="p2">
+    <div class="section-header">
+      <div class="phase-icon" style="background:var(--purple-bg);">🧩</div>
+      <div>
+        <div class="section-title">Faz 2 — Object-Oriented ABAP (OOP)</div>
+        <div class="section-meta">
+          <span class="badge badge-purple">Hafta 3-4</span>
+          <span style="font-size:12px;color:var(--text3);">Sınav Ağırlığı ~%15</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">2.1</div>
+        <div class="module-title">Sınıflar, Nesneler ve Kapsülleme</div>
+        <div class="module-weeks">Hafta 3</div>
+        <div class="expand-icon">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-content">
+          <ul class="topics-list">
+            <li><span class="topic-dot"></span><code>CLASS ... ENDCLASS</code> yapısı: <code>PUBLIC / PROTECTED / PRIVATE</code> bölümleri</li>
+            <li><span class="topic-dot"></span>Instance vs Static (<code>CLASS-METHODS</code>, <code>CLASS-DATA</code>) üyeler</li>
+            <li><span class="topic-dot"></span>Constructor: <code>CONSTRUCTOR</code> ve <code>CLASS_CONSTRUCTOR</code></li>
+            <li><span class="topic-dot"></span>Friend Classes, Read-Only Attributes</li>
+            <li><span class="topic-dot"></span>Local Class vs Global Class — ADT'de global sınıf oluşturma</li>
+          </ul>
+          <div class="tasks-section">
+            <div class="tasks-title">💻 Hands-on Görevler</div>
+            <div class="task-item">
+              <div class="task-num">1</div>
+              <div class="task-text"><strong>Banka Hesabı Sınıfı:</strong> <code>ZCL_BANK_ACCOUNT</code> global sınıfı oluştur. Private: <code>mv_balance</code>, <code>mv_account_id</code>. Public metodlar: <code>deposit()</code>, <code>withdraw()</code>, <code>get_balance()</code>. Constructor'da <code>mv_account_id</code> zorunlu parametre alsın. Bakiye negatife düşerse <code>ZCX_INSUFFICIENT_FUNDS</code> fırlat.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">2</div>
+              <div class="task-text"><strong>Singleton Pattern:</strong> <code>ZCL_CONFIG_MANAGER</code> sınıfını Singleton olarak tasarla. <code>CLASS-DATA mo_instance TYPE REF TO zcl_config_manager</code> ve <code>get_instance( )</code> static metodu ile gerçekleştir. Neden Singleton kullandığını yoruma ekle.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">3</div>
+              <div class="task-text"><strong>Immutable Value Object:</strong> <code>ZCL_MONEY</code> sınıfını oluştur: amount + currency ile construct edilsin, setter metodu olmasın (READ-ONLY attributes). <code>add()</code> metodu mevcut nesneyi değiştirmek yerine yeni bir <code>ZCL_MONEY</code> instance'ı döndürsün.</div>
+            </div>
+          </div>
+          <div class="hub-ref">
+            <div class="hub-icon">📚</div>
+            <div class="hub-content">
+              <div class="hub-label">SAP LEARNING HUB REFERANSI</div>
+              <div class="hub-courses">
+                <span class="hub-course">S4D400</span>
+                <span class="hub-course">Unit 7-8: ABAP OO Basics</span>
+              </div>
+            </div>
+          </div>
+          <div class="mentor-tip">
+            <div class="mentor-icon">👨‍🏫</div>
+            <div class="mentor-content">
+              <div class="mentor-label">MENTOR TAVSİYESİ — CLEAN CODE</div>
+              <div class="mentor-text">Kodu okurken bir metodun ne yaptığını anlamak için sınıf başlığına çıkman gerekiyorsa, o kod yeterince kapsüllenmiş değildir. Küçük, tek sorumluluk taşıyan metodlar yaz (Single Responsibility Principle). ABAP Clean Code rehberinde metod başına maksimum ~20-30 satır önerilir — bunu hedef al.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">2.2</div>
+        <div class="module-title">Kalıtım, Polimorfizm ve Arayüzler</div>
+        <div class="module-weeks">Hafta 3-4</div>
+        <div class="expand-icon">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-content">
+          <ul class="topics-list">
+            <li><span class="topic-dot"></span><code>INHERITING FROM</code> — Kalıtım zinciri ve <code>super->constructor( )</code></li>
+            <li><span class="topic-dot"></span>Method Overriding: <code>REDEFINITION</code> keyword</li>
+            <li><span class="topic-dot"></span><code>ABSTRACT</code> sınıflar ve metodlar</li>
+            <li><span class="topic-dot"></span><code>INTERFACES</code> — Çoklu implementasyon, alias'lar</li>
+            <li><span class="topic-dot"></span><code>CASE TYPE OF ... IS INSTANCE OF</code> ile runtime type kontrolü</li>
+            <li><span class="topic-dot"></span>RTTI: <code>CL_ABAP_TYPEDESCR</code> ile runtime reflection</li>
+          </ul>
+          <div class="tasks-section">
+            <div class="tasks-title">💻 Hands-on Görevler</div>
+            <div class="task-item">
+              <div class="task-num">1</div>
+              <div class="task-text"><strong>Ödeme Sistemi Hiyerarşisi:</strong> <code>ZIF_PAYMENT</code> interface'i tanımla (<code>pay( )</code>, <code>get_payment_info( )</code>). <code>ZCL_CREDIT_CARD</code>, <code>ZCL_BANK_TRANSFER</code>, <code>ZCL_CRYPTO</code> sınıfları bunu implement etsin. Bir ödeme processor'ı yaz: <code>ZIF_PAYMENT</code> referansı alıp polimorfik olarak <code>pay( )</code> çağırsın.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">2</div>
+              <div class="task-text"><strong>Template Method Pattern:</strong> Abstract <code>ZCL_REPORT_GENERATOR</code> yaz: <code>generate( )</code> metodu final olsun (template), içinde <code>fetch_data( )</code>, <code>format_output( )</code>, <code>send( )</code> çağırsın — bunlar abstract. PDF ve Excel alt sınıflarını oluştur.</div>
+            </div>
+          </div>
+          <div class="hub-ref">
+            <div class="hub-icon">📚</div>
+            <div class="hub-content">
+              <div class="hub-label">SAP LEARNING HUB REFERANSI</div>
+              <div class="hub-courses">
+                <span class="hub-course">S4D400</span>
+                <span class="hub-course">Unit 9: Inheritance &amp; Interfaces</span>
+              </div>
+            </div>
+          </div>
+          <div class="mentor-tip">
+            <div class="mentor-icon">👨‍🏫</div>
+            <div class="mentor-content">
+              <div class="mentor-label">MENTOR TAVSİYESİ — PRATIKTE EN ÇOK YAPILAN HATA</div>
+              <div class="mentor-text">Interface yerine kalıtım tercih etmek. ABAP'ta çoklu kalıtım yok ama çoklu interface implementasyonu var. Kural şu: "IS-A" ilişkisi varsa kalıtım, "CAN-DO" ilişkisi varsa interface. <code>ZCL_EMPLOYEE</code> bir <code>ZCL_PERSON</code>'dır (kalıtım). Ama <code>ZCL_EMPLOYEE</code> kargo taşıyabilir mi? Hayır — <code>ZIF_SERIALIZABLE</code> implement etmesi gerek (interface). Bu ayrımı sınav sorularında doğrudan görürsün.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">2.3</div>
+        <div class="module-title">ABAP Unit Test — Test Driven Development</div>
+        <div class="module-weeks">Hafta 4</div>
+        <div class="expand-icon">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-content">
+          <ul class="topics-list">
+            <li><span class="topic-dot"></span>ABAP Unit Framework: <code>FOR TESTING</code>, <code>RISK LEVEL</code>, <code>DURATION</code></li>
+            <li><span class="topic-dot"></span>Test metodları: <code>setup( )</code>, <code>teardown( )</code></li>
+            <li><span class="topic-dot"></span>Assert metodları: <code>cl_abap_unit_assert=>assert_equals()</code>, <code>assert_true()</code>, <code>assert_bound()</code></li>
+            <li><span class="topic-dot"></span>Test Double Framework (ABAP): Mock ve Stub oluşturma</li>
+            <li><span class="topic-dot"></span>Dependency Injection ile Test Edilebilir Kod Yazımı</li>
+          </ul>
+          <div class="tasks-section">
+            <div class="tasks-title">💻 Hands-on Görevler</div>
+            <div class="task-item">
+              <div class="task-num">1</div>
+              <div class="task-text"><strong>ZCL_BANK_ACCOUNT için Unit Test:</strong> M2.1'de yazdığın banka hesabı sınıfı için kapsamlı unit testler yaz. Senaryolar: başarılı para yatırma, başarılı çekme, yetersiz bakiye exception'ı, sıfır tutar girişi. Her test case'i ayrı bir test metodu olarak yaz.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">2</div>
+              <div class="task-text"><strong>Mock ile DB Bağımsız Test:</strong> Bir veri okuma servisini test et. Gerçek DB çağrısı yerine bir interface (<code>ZIF_DATA_PROVIDER</code>) kullan. Test sınıfında bu interface'i mock'la (<code>PARTIALLY IMPLEMENTING</code>). DB'ye bağlanmadan iş mantığını test et.</div>
+            </div>
+          </div>
+          <div class="hub-ref">
+            <div class="hub-icon">📚</div>
+            <div class="hub-content">
+              <div class="hub-label">SAP LEARNING HUB REFERANSI</div>
+              <div class="hub-courses">
+                <span class="hub-course">S4D400</span>
+                <span class="hub-course">Unit 11: ABAP Unit Testing</span>
+              </div>
+            </div>
+          </div>
+          <div class="mentor-tip">
+            <div class="mentor-icon">👨‍🏫</div>
+            <div class="mentor-content">
+              <div class="mentor-label">MENTOR TAVSİYESİ — KARIYER TAVSİYESİ</div>
+              <div class="mentor-text">ABAP Unit test yazabilen geliştiriciler iş piyasasında çok az. Çoğu senior ABAP developer bile "test yazma zamanımız yok" der. Bu alanda öne çıkmak için: kodunun %80'ini test kapsamına almayı hedefle. ABAP Clean Core sertifikasyonunda test edilebilirlik bir değerlendirme kriteridir. TDD yazan bir ABAP developer bulmak çok zordur — ol.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ========== FAZ 3 ========== -->
+  <div id="p3">
+    <div class="section-header">
+      <div class="phase-icon" style="background:var(--teal-bg);">🗄️</div>
+      <div>
+        <div class="section-title">Faz 3 — ABAP SQL & Code Pushdown</div>
+        <div class="section-meta">
+          <span class="badge badge-teal">Hafta 5-6</span>
+          <span style="font-size:12px;color:var(--text3);">Sınav Ağırlığı ~%18</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">3.1</div>
+        <div class="module-title">Modern ABAP SQL — Eski Sözdiziminden Kurtulmak</div>
+        <div class="module-weeks">Hafta 5</div>
+        <div class="expand-icon">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-content">
+          <ul class="topics-list">
+            <li><span class="topic-dot"></span>INTO vs INTO TABLE vs APPENDING TABLE — Ne zaman hangisi?</li>
+            <li><span class="topic-dot"></span>JOIN türleri: <code>INNER JOIN</code>, <code>LEFT OUTER JOIN</code>, <code>CROSS JOIN</code></li>
+            <li><span class="topic-dot"></span>Aggregate Functions: <code>COUNT</code>, <code>SUM</code>, <code>AVG</code>, <code>MAX</code>, <code>MIN</code></li>
+            <li><span class="topic-dot"></span>Yeni SQL Features: <code>CASE</code>, <code>COALESCE</code>, <code>NULLS FIRST/LAST</code>, <code>OFFSET/FETCH NEXT</code></li>
+            <li><span class="topic-dot"></span>String Functions: <code>SUBSTRING</code>, <code>UPPER</code>, <code>LOWER</code>, <code>CONCAT</code>, <code>LENGTH</code></li>
+            <li><span class="topic-dot"></span>Path Expressions (CDS Associations üzerinden okuma)</li>
+          </ul>
+          <div class="tasks-section">
+            <div class="tasks-title">💻 Hands-on Görevler</div>
+            <div class="task-item">
+              <div class="task-num">1</div>
+              <div class="task-text"><strong>Sipariş Analizi Sorgusu:</strong> <code>VBAK</code> (sipariş başlığı) ve <code>VBAP</code> (sipariş kalemi) tablolarını <code>JOIN</code> ile birleştir. Her müşteri için toplam sipariş tutarını hesapla. <code>HAVING SUM(netwr) > 10000</code> ile filtrele. <code>ORDER BY</code> ile büyükten küçüğe sırala. <code>FETCH NEXT 10 ROWS ONLY</code> ile sayfalama ekle.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">2</div>
+              <div class="task-text"><strong>CASE ile Dinamik Sınıflandırma:</strong> <code>SFLIGHT</code> tablosundan uçuşları sorgula. <code>CASE WHEN price > 500 THEN 'Premium' WHEN price > 200 THEN 'Business' ELSE 'Economy' END AS ticket_class</code> ile dinamik sınıflandırma yap. Her sınıftan kaç uçuş olduğunu göster.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">3</div>
+              <div class="task-text"><strong>Subquery ile Üst Performanslılar:</strong> Ortalama fiyatın üzerindeki uçuşları, iç sorgu kullanmadan (scalar subquery yerine CTE benzeri yaklaşımla) bul. Aynı sonucu <code>HAVING AVG(...)</code> ile de çözmeyi dene. İki yaklaşımın ne zaman hangi çözümü kullanması gerektiğini belgele.</div>
+            </div>
+          </div>
+          <div class="hub-ref">
+            <div class="hub-icon">📚</div>
+            <div class="hub-content">
+              <div class="hub-label">SAP LEARNING HUB REFERANSI</div>
+              <div class="hub-courses">
+                <span class="hub-course">S4D430</span>
+                <span class="hub-course">Unit 2: ABAP SQL</span>
+                <span class="hub-course">Unit 3: Advanced SQL</span>
+              </div>
+            </div>
+          </div>
+          <div class="mentor-tip">
+            <div class="mentor-icon">👨‍🏫</div>
+            <div class="mentor-content">
+              <div class="mentor-label">MENTOR TAVSİYESİ — PERFORMANS KRİTİK HATA</div>
+              <div class="mentor-text">ABAP'ta "SELECT *" yazmak kariyerine zarar verir. Daima ihtiyacın olan alanları listele: <code>SELECT field1, field2 FROM ...</code>. Büyük tablolarda gereksiz alan okumak ağ trafiğini ve bellek kullanımını katlar. S/4HANA'da bu daha da kritik — columnar store'un avantajından yararlanmak için sütun seçimi şarttır.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">3.2</div>
+        <div class="module-title">Code Pushdown — İşlemi HANA'ya Taşımak</div>
+        <div class="module-weeks">Hafta 5-6</div>
+        <div class="expand-icon">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-content">
+          <ul class="topics-list">
+            <li><span class="topic-dot"></span>Code-to-Data vs Data-to-Code paradigması</li>
+            <li><span class="topic-dot"></span>Neden Pushdown? HANA in-memory columnar avantajı</li>
+            <li><span class="topic-dot"></span>ABAP ile pushdown: Karmaşık aggregation'ları SQL'e taşıma</li>
+            <li><span class="topic-dot"></span>Database Views vs CDS Views — Fark nedir?</li>
+            <li><span class="topic-dot"></span>AMDP (ABAP Managed Database Procedures) — HANA SQLScript'i ABAP'tan çağırma</li>
+            <li><span class="topic-dot"></span>Performans ölçümü: SQL Trace (ST05), ABAP Profiler</li>
+          </ul>
+          <div class="tasks-section">
+            <div class="tasks-title">💻 Hands-on Görevler</div>
+            <div class="task-item">
+              <div class="task-num">1</div>
+              <div class="task-text"><strong>Before/After Pushdown Karşılaştırması:</strong> Önce ABAP'ta: 1000 kayıt oku, iç tabloda döngüyle topla. Sonra SQL'de: <code>SUM()</code> ve <code>GROUP BY</code> ile aynı sonucu tek sorguda al. SQL Trace (ST05) ile her iki yaklaşımın veritabanı yükünü karşılaştır ve bulgularını belgele.</td></div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">2</div>
+              <div class="task-text"><strong>AMDP ile SQLScript:</strong> Basit bir AMDP metodu yaz: <code>INTERFACES if_amdp_marker_hdb</code> implement et. Metod içinde HANA SQLScript ile SFLIGHT üzerinde bir analitik sorgu çalıştır. ABAP tarafından bu AMDP'yi çağır ve sonuçları ekrana yazdır.</div>
+            </div>
+          </div>
+          <div class="hub-ref">
+            <div class="hub-icon">📚</div>
+            <div class="hub-content">
+              <div class="hub-label">SAP LEARNING HUB REFERANSI</div>
+              <div class="hub-courses">
+                <span class="hub-course">S4D430</span>
+                <span class="hub-course">Unit 4: Code Pushdown</span>
+                <span class="hub-course">Unit 5: AMDP</span>
+              </div>
+            </div>
+          </div>
+          <div class="mentor-tip">
+            <div class="mentor-icon">👨‍🏫</div>
+            <div class="mentor-content">
+              <div class="mentor-label">MENTOR TAVSİYESİ — ABAP CLOUD'DA AMDP</div>
+              <div class="mentor-text">AMDP kullanmak aslında Clean Core felsefesine aykırıdır — HANA'ya bağımlılık yaratır. ABAP Cloud'da AMDP'nin yerine CDS Table Functions tercih edilir. AMDP'yi öğren ama "bu legacy sistemlerde kullanılır" bağlamıyla öğren. Sınav soruları bu ayrımı test eder.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ========== FAZ 4 ========== -->
+  <div id="p4">
+    <div class="section-header">
+      <div class="phase-icon" style="background:var(--amber-bg);">🔍</div>
+      <div>
+        <div class="section-title">Faz 4 — Core Data Services (CDS)</div>
+        <div class="section-meta">
+          <span class="badge badge-amber">Hafta 7-9</span>
+          <span style="font-size:12px;color:var(--text3);">Sınav Ağırlığı ~%22 — KRİTİK</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">4.1</div>
+        <div class="module-title">CDS View Temelleri ve Annotation Mimarisi</div>
+        <div class="module-weeks">Hafta 7</div>
+        <div class="expand-icon">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-content">
+          <ul class="topics-list">
+            <li><span class="topic-dot"></span>CDS nedir? DB View'dan farkı nedir? — Semantik katman anlayışı</li>
+            <li><span class="topic-dot"></span>Basic CDS View: <code>DEFINE VIEW ENTITY</code> (yeni syntax) vs eski <code>DEFINE VIEW</code></li>
+            <li><span class="topic-dot"></span>Annotation Framework: <code>@AbapCatalog</code>, <code>@Analytics</code>, <code>@EndUserText</code></li>
+            <li><span class="topic-dot"></span>Associations: <code>ASSOCIATION TO</code>, <code>ON</code> koşulları, Cardinality</li>
+            <li><span class="topic-dot"></span>CDS View Türleri: Basic, Composite, Consumption View (VDM katmanları)</li>
+            <li><span class="topic-dot"></span><code>CASE</code>, <code>CAST</code>, <code>COALESCE</code> CDS içinde kullanım</li>
+          </ul>
+          <div class="tasks-section">
+            <div class="tasks-title">💻 Hands-on Görevler</div>
+            <div class="task-item">
+              <div class="task-num">1</div>
+              <div class="task-text"><strong>İlk CDS View Zinciri:</strong> 3 katmanlı CDS yaz: (1) <code>ZI_SalesOrder</code> — <code>VBAK</code> üzerinde Basic View. (2) <code>ZI_SalesOrderItem</code> — <code>VBAP</code> üzerinde Basic View, ilkiyle Association. (3) <code>ZC_SalesOrderAnalysis</code> — Composite, ikisini birleştir, CASE ile sipariş statüsünü okunabilir metne dönüştür.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">2</div>
+              <div class="task-text"><strong>Annotation ile UI Semantiği:</strong> <code>@UI.lineItem</code>, <code>@UI.selectionField</code>, <code>@UI.identification</code> annotationlarını CDS'e ekle. <code>@EndUserText.label</code> ile Türkçe etiketler tanımla. Fiori Elements Preview'da nasıl göründüğünü kontrol et.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">3</div>
+              <div class="task-text"><strong>CDS Table Function:</strong> HANA SQLScript kullanarak bir CDS Table Function yaz. Girdi parametresi olarak tarih aralığı al, bu aralıktaki satışları döndür. ABAP'tan bu fonksiyonu çağır.</div>
+            </div>
+          </div>
+          <div class="hub-ref">
+            <div class="hub-icon">📚</div>
+            <div class="hub-content">
+              <div class="hub-label">SAP LEARNING HUB REFERANSI</div>
+              <div class="hub-courses">
+                <span class="hub-course">S4D430</span>
+                <span class="hub-course">Unit 6-8: CDS Views</span>
+                <span class="hub-course">S4D437</span>
+                <span class="hub-course">Unit 1: CDS Foundations</span>
+              </div>
+            </div>
+          </div>
+          <div class="mentor-tip">
+            <div class="mentor-icon">👨‍🏫</div>
+            <div class="mentor-content">
+              <div class="mentor-label">MENTOR TAVSİYESİ — SINAVIN EN ÇOK ALIŞTIRAN KONUSU</div>
+              <div class="mentor-text">Yeni başlayanlar <code>DEFINE VIEW</code> ile <code>DEFINE VIEW ENTITY</code> arasındaki farkı karıştırır. ABAP Cloud'da sadece <code>DEFINE VIEW ENTITY</code> kullanılabilir — eski syntax izin verilmez. Association'larda <code>_Association</code> prefix convention'ını kesinlikle öğren, sınavda "bu association adı neden _ ile başlar" sorusu gelir.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">4.2</div>
+        <div class="module-title">CDS Access Controls (DCL) ve Parametreli CDS</div>
+        <div class="module-weeks">Hafta 8</div>
+        <div class="expand-icon">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-content">
+          <ul class="topics-list">
+            <li><span class="topic-dot"></span>Data Control Language (DCL) — CDS üzerinde yetkilendirme</li>
+            <li><span class="topic-dot"></span><code>DEFINE ROLE</code> — Access Control Object oluşturma</li>
+            <li><span class="topic-dot"></span><code>WHERE</code> koşulları ve <code>ASPECT pfcg_auth</code></li>
+            <li><span class="topic-dot"></span>Parametreli CDS View: <code>WITH PARAMETERS</code></li>
+            <li><span class="topic-dot"></span>CDS Analitik Annotation'ları: <code>@AnalyticsDetails.query</code>, Hierarchy Annotation</li>
+          </ul>
+          <div class="tasks-section">
+            <div class="tasks-title">💻 Hands-on Görevler</div>
+            <div class="task-item">
+              <div class="task-num">1</div>
+              <div class="task-text"><strong>DCL ile Veri Erişim Kontrolü:</strong> <code>ZI_SalesOrder</code> view'ına DCL ekle. Kullanıcı sadece kendi organizasyon birimine ait siparişleri görebilsin (<code>aspect pfcg_auth( SalesDocument, VKORG : auth.vkorg )</code> benzeri). ADT'de DCL objesi oluştur ve aktive et.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">2</div>
+              <div class="task-text"><strong>Parametreli CDS:</strong> <code>WITH PARAMETERS p_date: abap.dats</code> ekle. Bu parametreyi WHERE koşulunda kullan. ABAP kodundan parametreli CDS'i şu şekilde çağır: <code>SELECT ... FROM zcds_view( p_date = '20240101' )</code>.</div>
+            </div>
+          </div>
+          <div class="hub-ref">
+            <div class="hub-icon">📚</div>
+            <div class="hub-content">
+              <div class="hub-label">SAP LEARNING HUB REFERANSI</div>
+              <div class="hub-courses">
+                <span class="hub-course">S4D437</span>
+                <span class="hub-course">Unit 3: CDS Access Control</span>
+                <span class="hub-course">Unit 4: CDS Parameters</span>
+              </div>
+            </div>
+          </div>
+          <div class="mentor-tip">
+            <div class="mentor-icon">👨‍🏫</div>
+            <div class="mentor-content">
+              <div class="mentor-label">MENTOR TAVSİYESİ — GÜVENLİK</div>
+              <div class="mentor-text">Projelerde sıkça görülen hata: CDS view'ları DCL olmadan production'a taşımak. "Yetkilendirme zaten ABAP kodunda var" diyenler oluyor — bu yanlış. CDS düzeyinde access control olmadan, o view'ı bilen herkes doğrudan OData veya ADBC üzerinden veriye erişebilir. CDS objesi oluşturduğun anda DCL de oluştur — bu alışkanlığı şimdi kazan.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">4.3</div>
+        <div class="module-title">Virtual Data Model (VDM) ve CDS Annotation Derinliği</div>
+        <div class="module-weeks">Hafta 9</div>
+        <div class="expand-icon">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-content">
+          <ul class="topics-list">
+            <li><span class="topic-dot"></span>SAP VDM: I_ (Interface), C_ (Consumption), P_ (Private) katmanları</li>
+            <li><span class="topic-dot"></span>Released CDS Views — C1 API kullanımı</li>
+            <li><span class="topic-dot"></span>OData Annotation'ları: <code>@OData.entityType.name</code>, <code>@OData.publish: true</code></li>
+            <li><span class="topic-dot"></span>Search Annotation'ları: <code>@Search.searchable</code>, <code>@Search.defaultSearchElement</code></li>
+            <li><span class="topic-dot"></span>Metadata Extension Objects — CDS'i değiştirmeden annotation ekleme</li>
+          </ul>
+          <div class="tasks-section">
+            <div class="tasks-title">💻 Hands-on Görevler</div>
+            <div class="task-item">
+              <div class="task-num">1</div>
+              <div class="task-text"><strong>Metadata Extension:</strong> Mevcut bir CDS view'ı direkt değiştirmeden, ayrı bir Metadata Extension objesiyle (<code>ANNOTATE VIEW</code>) UI annotation ekle. Neden bu yaklaşım daha temiz olduğunu belgele (Separation of Concerns).</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">2</div>
+              <div class="task-text"><strong>SAP Released API Keşfi:</strong> ADT'de <code>I_SalesOrder</code> SAP released CDS view'ını bul. Hangi annotation'ları var? <code>@VDM.viewType</code> ne? Kendi Z namespace CDS view'ında bu released view'a join at. Neden Z_ tablolar yerine released API kullanmak gerektiğini açıkla.</div>
+            </div>
+          </div>
+          <div class="hub-ref">
+            <div class="hub-icon">📚</div>
+            <div class="hub-content">
+              <div class="hub-label">SAP LEARNING HUB REFERANSI</div>
+              <div class="hub-courses">
+                <span class="hub-course">S4D437</span>
+                <span class="hub-course">Unit 5: VDM Concept</span>
+                <span class="hub-course">S4D430</span>
+                <span class="hub-course">Unit 9: Annotations</span>
+              </div>
+            </div>
+          </div>
+          <div class="mentor-tip">
+            <div class="mentor-icon">👨‍🏫</div>
+            <div class="mentor-content">
+              <div class="mentor-label">MENTOR TAVSİYESİ — CLEAN CORE ALTIN KURALI</div>
+              <div class="mentor-text">Hiçbir zaman SAP'ın standart tablolarına (<code>VBAK</code>, <code>KNA1</code> vb.) doğrudan SELECT yazma — bunun yerine SAP'ın released CDS view'larını (<code>I_SalesOrder</code>, <code>I_BusinessPartner</code>) kullan. Bu yaklaşım upgrade-safe'dir. S/4HANA her sürümde tablo yapısı değişebilir ama released API backward compatible kalmak zorunda. Bu fark bir yükseltme projesinde seni ya kahraman ya da suçlu yapar.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ========== FAZ 5 ========== -->
+  <div id="p5">
+    <div class="section-header">
+      <div class="phase-icon" style="background:var(--green-bg);">🚀</div>
+      <div>
+        <div class="section-title">Faz 5 — RAP (ABAP RESTful Application Programming Model)</div>
+        <div class="section-meta">
+          <span class="badge badge-green">Hafta 10-13</span>
+          <span style="font-size:12px;color:var(--text3);">Sınav Ağırlığı ~%25 — EN KRİTİK FAZ</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">5.1</div>
+        <div class="module-title">RAP Mimarisi ve Business Object Kavramı</div>
+        <div class="module-weeks">Hafta 10</div>
+        <div class="expand-icon">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-content">
+          <ul class="topics-list">
+            <li><span class="topic-dot"></span>RAP nedir? Neden RAP? — OData V2 → OData V4 yolculuğu</li>
+            <li><span class="topic-dot"></span>RAP Katmanları: CDS → Behavior Definition (BDEF) → Behavior Implementation (BIL) → Service Definition → Service Binding</li>
+            <li><span class="topic-dot"></span>Business Object (BO) yapısı: Root Entity, Child Entity, hiyerarşi</li>
+            <li><span class="topic-dot"></span>Managed vs Unmanaged RAP — Ne zaman hangisi?</li>
+            <li><span class="topic-dot"></span><code>define behavior for</code> — Temel BDEF yapısı</li>
+          </ul>
+          <div class="tasks-section">
+            <div class="tasks-title">💻 Hands-on Görevler</div>
+            <div class="task-item">
+              <div class="task-num">1</div>
+              <div class="task-text"><strong>İlk RAP Business Object:</strong> Basit bir "Todo List" BO'su oluştur. Adımlar: (1) <code>ZTODO</code> tablosu oluştur (todo_id, title, status, created_at). (2) CDS View Entity yaz. (3) Managed BDEF oluştur (create, update, delete). (4) Service Definition ve Binding yap. (5) Fiori Elements Preview'da test et.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">2</div>
+              <div class="task-text"><strong>Hiyerarşik BO:</strong> Root: <code>ZOrder</code>, Child: <code>ZOrderItem</code>. BDEF'de <code>composition of ZOrderItem</code> tanımla. İki entity arasında navigasyon tanımla. OData Preview'da sipariş oluşturup kalem ekleyebildiğini test et.</div>
+            </div>
+          </div>
+          <div class="hub-ref">
+            <div class="hub-icon">📚</div>
+            <div class="hub-content">
+              <div class="hub-label">SAP LEARNING HUB REFERANSI</div>
+              <div class="hub-courses">
+                <span class="hub-course">S4D437</span>
+                <span class="hub-course">Unit 6-7: RAP Introduction</span>
+                <span class="hub-course">S4D425</span>
+                <span class="hub-course">Unit 1-2: RAP Architecture</span>
+              </div>
+            </div>
+          </div>
+          <div class="mentor-tip">
+            <div class="mentor-icon">👨‍🏫</div>
+            <div class="mentor-content">
+              <div class="mentor-label">MENTOR TAVSİYESİ — MANAGED vs UNMANAGED</div>
+              <div class="mentor-text">%90 senaryoda Managed RAP tercih et. Unmanaged RAP sadece şu durumlarda gerekir: legacy tabloya yazman gerekiyorsa, karmaşık number assignment varsa, veya custom locking mekanizması zorunluysa. Sınavda "bu senaryoda managed mı unmanaged mı kullanırsın?" sorusu kesinlikle gelir — cevap neredeyse her zaman Managed'dır.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">5.2</div>
+        <div class="module-title">Behavior Implementation — Validations, Determinations, Actions</div>
+        <div class="module-weeks">Hafta 11</div>
+        <div class="expand-icon">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-content">
+          <ul class="topics-list">
+            <li><span class="topic-dot"></span>Behavior Implementation Class (BIL): <code>CLASS ... DEFINITION INHERITING FROM cl_abap_behavior_handler</code></li>
+            <li><span class="topic-dot"></span>Validations: <code>METHODS validate_xxx FOR VALIDATE ON SAVE</code></li>
+            <li><span class="topic-dot"></span>Determinations: <code>METHODS determine_xxx FOR DETERMINE ON MODIFY</code></li>
+            <li><span class="topic-dot"></span>Actions: <code>METHODS action_xxx FOR ACTION</code> — Instance ve Static Actions</li>
+            <li><span class="topic-dot"></span><code>reported</code>, <code>failed</code>, <code>mapped</code> tabloları — RAP'ın mesajlaşma mekanizması</li>
+            <li><span class="topic-dot"></span>EML (Entity Manipulation Language): <code>MODIFY ENTITY ... FIELDS (...) WITH ...</code></li>
+          </ul>
+          <div class="tasks-section">
+            <div class="tasks-title">💻 Hands-on Görevler</div>
+            <div class="task-item">
+              <div class="task-num">1</div>
+              <div class="task-text"><strong>Validation Zinciri:</strong> <code>ZOrder</code> BO'suna validasyon ekle: (1) Sipariş tutarı 0'dan büyük olmalı. (2) Müşteri no boş olamaz. (3) Teslimat tarihi bugünden sonra olmalı. Hata durumunda <code>reported</code> tablosuna uygun mesaj yaz. Fiori'de hata mesajlarının göründüğünü test et.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">2</div>
+              <div class="task-text"><strong>Custom Action — Siparişi Onayla:</strong> <code>approve_order</code> instance action'ı oluştur. BDEF'de <code>action approve_order result [1] $self</code> tanımla. Impl'da: statüsü 'APPROVED' yap, onay tarihini set et, kullanıcıyı logla. UI'da buton görünür olsun (<code>@UI.lineItem: [{type: #FOR_ACTION}]</code>).</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">3</div>
+              <div class="task-text"><strong>Determination — Otomatik Numara:</strong> <code>set_order_id</code> determination'ı yaz (<code>ON MODIFY FIELD title</code>). <code>cl_system_uuid=>create_uuid_x16_static()</code> ile benzersiz ID oluştur. EML ile MODIFY ENTITY kullanarak alanı güncelle.</div>
+            </div>
+          </div>
+          <div class="hub-ref">
+            <div class="hub-icon">📚</div>
+            <div class="hub-content">
+              <div class="hub-label">SAP LEARNING HUB REFERANSI</div>
+              <div class="hub-courses">
+                <span class="hub-course">S4D437</span>
+                <span class="hub-course">Unit 8: Behavior Implementation</span>
+                <span class="hub-course">S4D425</span>
+                <span class="hub-course">Unit 3-5: Validations &amp; Actions</span>
+              </div>
+            </div>
+          </div>
+          <div class="mentor-tip">
+            <div class="mentor-icon">👨‍🏫</div>
+            <div class="mentor-content">
+              <div class="mentor-label">MENTOR TAVSİYESİ — RAP'TA EN SIK YAPILAN 3 HATA</div>
+              <div class="mentor-text">
+                1. <strong>Validation içinde COMMIT WORK yazmak</strong> — RAP transaction yönetimini kendisi yapar, asla COMMIT/ROLLBACK yazma.<br>
+                2. <strong>reported tablosunu doldurmayı unutmak</strong> — failed tablosunu doldursan bile reported olmadan UI'da mesaj görünmez.<br>
+                3. <strong>Determination'da MODIFY yerine doğrudan UPDATE yazmak</strong> — RAP içinde EML kullan, native SQL yazma.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">5.3</div>
+        <div class="module-title">Draft Mekanizması ve OData Service Yayınlama</div>
+        <div class="module-weeks">Hafta 12-13</div>
+        <div class="expand-icon">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-content">
+          <ul class="topics-list">
+            <li><span class="topic-dot"></span>Draft Nedir? — Kayıt kilitleme ve işlem güvenliği</li>
+            <li><span class="topic-dot"></span>BDEF'de Draft Aktifleştirme: <code>with draft</code>, Draft Table tanımı</li>
+            <li><span class="topic-dot"></span>Draft Action'ları: <code>Prepare</code>, <code>Activate</code>, <code>Discard</code>, <code>Edit</code>, <code>Resume</code></li>
+            <li><span class="topic-dot"></span>Service Definition: <code>DEFINE SERVICE</code>, expose entity'ler</li>
+            <li><span class="topic-dot"></span>Service Binding: OData V4 - UI, OData V4 - Web API türleri</li>
+            <li><span class="topic-dot"></span>Fiori Elements ile otomatik UI — Preview uygulaması</li>
+          </ul>
+          <div class="tasks-section">
+            <div class="tasks-title">💻 Hands-on Görevler</div>
+            <div class="task-item">
+              <div class="task-num">1</div>
+              <div class="task-text"><strong>Draft Etkinleştirme:</strong> <code>ZOrder</code> BO'suna draft ekle. Draft tablo (<code>ZORDER_D</code>) oluştur. BDEF'de <code>with draft</code> ekle, <code>draft table ZORDER_D</code> tanımla. Fiori'de: formu doldur, kaydetme, sayfadan çık, geri gel — draft'ın korunduğunu doğrula.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">2</div>
+              <div class="task-text"><strong>OData API Test:</strong> Service Binding'i "OData V4 - Web API" olarak da yayınla. Postman veya curl ile REST çağrıları yap: GET (liste), GET (tekil), POST (oluştur), PATCH (güncelle), DELETE (sil). Her isteğin response body'sini incele.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">3</div>
+              <div class="task-text"><strong>Feature Control:</strong> Belirli bir durumda (örn. statü 'APPROVED' iken) düzenleme ve silme butonlarını gizle. BDEF'de <code>field ( read only ) OrderId</code> ve <code>global authorization: instance( features: instances )</code> tanımla. Implementation sınıfında <code>get_features( )</code> metodunu yaz.</div>
+            </div>
+          </div>
+          <div class="hub-ref">
+            <div class="hub-icon">📚</div>
+            <div class="hub-content">
+              <div class="hub-label">SAP LEARNING HUB REFERANSI</div>
+              <div class="hub-courses">
+                <span class="hub-course">S4D425</span>
+                <span class="hub-course">Unit 6: Draft Handling</span>
+                <span class="hub-course">Unit 7: Service Binding</span>
+                <span class="hub-course">S4D437</span>
+                <span class="hub-course">Unit 10: OData Exposure</span>
+              </div>
+            </div>
+          </div>
+          <div class="mentor-tip">
+            <div class="mentor-icon">👨‍🏫</div>
+            <div class="mentor-content">
+              <div class="mentor-label">MENTOR TAVSİYESİ — DRAFT KARAR ŞEMASI</div>
+              <div class="mentor-text">Kullanıcı uygulamayı açık bırakıp çayını içmeye giderse ne olur? Draft olmadan başka bir kullanıcı aynı kaydı düzenleyebilir. Üretim uygulamalarında kullanıcıların formu kaydetmeden kapatması çok yaygındır — bu yüzden draft neredeyse her zaman gereklidir. "Küçük uygulama olduğu için draft istemiyoruz" demek yerine, neden gerekli olduğunu iş birimi ile tartış.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ========== FAZ 6 ========== -->
+  <div id="p6">
+    <div class="section-header">
+      <div class="phase-icon" style="background:var(--coral-bg);">✨</div>
+      <div>
+        <div class="section-title">Faz 6 — Clean Core & ABAP Cloud Extensibility</div>
+        <div class="section-meta">
+          <span class="badge badge-coral">Hafta 14-15</span>
+          <span style="font-size:12px;color:var(--text3);">Sınav Ağırlığı ~%8</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">6.1</div>
+        <div class="module-title">Clean Core Felsefesi ve ABAP Cloud Katmanları</div>
+        <div class="module-weeks">Hafta 14</div>
+        <div class="expand-icon">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-content">
+          <ul class="topics-list">
+            <li><span class="topic-dot"></span>Clean Core Nedir? SAP'ın upgrade-safe geliştirme vizyonu</li>
+            <li><span class="topic-dot"></span>3 Tier Modeli: Tier 1 (Standard), Tier 2 (Released API), Tier 3 (Customer)</li>
+            <li><span class="topic-dot"></span>ABAP Cloud: Hangi syntax yasak? (<code>FORM</code>, <code>REPORT</code>, dynpro, klasik ALV)</li>
+            <li><span class="topic-dot"></span>Released API'lar: <code>C0</code> (SAP internal), <code>C1</code> (Müşteri kullanımı), <code>S1</code> (System)</li>
+            <li><span class="topic-dot"></span>Extensibility Türleri: In-App, Side-by-Side, Key User</li>
+            <li><span class="topic-dot"></span>BAdI (Business Add-In) — Modern ABAP Extensibility noktaları</li>
+          </ul>
+          <div class="tasks-section">
+            <div class="tasks-title">💻 Hands-on Görevler</div>
+            <div class="task-item">
+              <div class="task-num">1</div>
+              <div class="task-text"><strong>API Kullanılabilirlik Analizi:</strong> ADT'de birkaç SAP class'ını (<code>CL_SALV_TABLE</code>, <code>CL_ABAP_CONTEXT_INFO</code>, <code>CL_GUI_FRONTEND_SERVICES</code>) kontrol et. Her birinin release durumunu (<code>@AbapCatalog.enhancementCategory</code>) bul. ABAP Cloud'da hangisi kullanılabilir, hangisi yasak? Neden? Belgele.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">2</div>
+              <div class="task-text"><strong>BAdI Implementation:</strong> SAP standart bir işleme (örn. Business Partner kayıt/güncelleme) BAdI noktası bul. Kendi Z namespace'inde implementation yaz. BAdI'nin ne zaman tetiklendiğini test et. "Enhancement" yaklaşımı ile "modifikasyon" farkını belgele.</div>
+            </div>
+          </div>
+          <div class="hub-ref">
+            <div class="hub-icon">📚</div>
+            <div class="hub-content">
+              <div class="hub-label">SAP LEARNING HUB REFERANSI</div>
+              <div class="hub-courses">
+                <span class="hub-course">S4D425</span>
+                <span class="hub-course">Unit 8: Clean Core Concepts</span>
+                <span class="hub-course">Unit 9: Extensibility</span>
+              </div>
+            </div>
+          </div>
+          <div class="mentor-tip">
+            <div class="mentor-icon">👨‍🏫</div>
+            <div class="mentor-content">
+              <div class="mentor-label">MENTOR TAVSİYESİ — KARIYER DEĞİŞTİREN ALGI</div>
+              <div class="mentor-text">Clean Core sadece teknik bir kural seti değil — bir zihniyet dönüşümüdür. "Bu özelliği SAP standart işlemine modification olarak ekleyebilirim" yerine "Bunun için SAP'ın sunduğu extensibility mekanizması ne?" diye düşünmek. Bu zihniyet seni 2026'nın iş piyasasında farklılaştıracak. SAP, müşterilerini clean core'a zorluyor — bu yetkinliğe sahip developer'lar altın değerinde.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">6.2</div>
+        <div class="module-title">Side-by-Side Extensibility ve Integration</div>
+        <div class="module-weeks">Hafta 15</div>
+        <div class="expand-icon">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-content">
+          <ul class="topics-list">
+            <li><span class="topic-dot"></span>SAP BTP (Business Technology Platform) — ABAP Environment</li>
+            <li><span class="topic-dot"></span>RAP ile dışarıya servis açma — Web API yaklaşımı</li>
+            <li><span class="topic-dot"></span>HTTP Client — <code>cl_web_http_client_manager</code> ile harici servis çağrısı</li>
+            <li><span class="topic-dot"></span>Communication Arrangements — BTP'de harici sistem bağlantısı</li>
+            <li><span class="topic-dot"></span>Key User Extensibility: Custom Fields, Custom Logic (App Studio)</li>
+          </ul>
+          <div class="tasks-section">
+            <div class="tasks-title">💻 Hands-on Görevler</div>
+            <div class="task-item">
+              <div class="task-num">1</div>
+              <div class="task-text"><strong>HTTP Client ile Dış API:</strong> <code>cl_web_http_client_manager=>create_by_http_destination()</code> kullanarak bir public REST API'ye (örn. JSONPlaceholder) GET isteği at. Response'u parse et (<code>xco_cp_json</code> veya manuel string parse). Veriyi bir iç tabloya aktar.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">2</div>
+              <div class="task-text"><strong>RAP Web API Tüketimi:</strong> Kendi RAP servisini Postman ile tüket. CSRF token alma adımını ekle. Ardından başka bir ABAP programından bu servisin OData endpoint'ini HTTP client ile çağır — ABAP-to-ABAP iletişim senaryosu.</div>
+            </div>
+          </div>
+          <div class="hub-ref">
+            <div class="hub-icon">📚</div>
+            <div class="hub-content">
+              <div class="hub-label">SAP LEARNING HUB REFERANSI</div>
+              <div class="hub-courses">
+                <span class="hub-course">S4D425</span>
+                <span class="hub-course">Unit 10: BTP &amp; Side-by-Side</span>
+                <span class="hub-course">Unit 11: HTTP Integration</span>
+              </div>
+            </div>
+          </div>
+          <div class="mentor-tip">
+            <div class="mentor-icon">👨‍🏫</div>
+            <div class="mentor-content">
+              <div class="mentor-label">MENTOR TAVSİYESİ</div>
+              <div class="mentor-text">ABAP Cloud'da eski <code>cl_http_client</code> sınıfı kullanılamaz — released değil. Bunun yerine <code>cl_web_http_client_manager</code> kullan. Bu fark sınavda ve gerçek projede kritik. ADT'de her sınıfı kullanmadan önce "Release State" kontrolünü alışkanlık haline getir.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ========== FAZ 7 ========== -->
+  <div id="p7">
+    <div class="section-header">
+      <div class="phase-icon" style="background:var(--red-bg);">🎯</div>
+      <div>
+        <div class="section-title">Faz 7 — Sınav Hazırlık ve Strateji</div>
+        <div class="section-meta">
+          <span class="badge badge-red">Hafta 16</span>
+          <span style="font-size:12px;color:var(--text3);">C_ABAPD_2507 — Hedef: İlk Denemede Geçmek</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">7.1</div>
+        <div class="module-title">Sınav Stratejisi ve Zayıf Nokta Analizi</div>
+        <div class="module-weeks">Hafta 16</div>
+        <div class="expand-icon">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-content">
+          <ul class="topics-list">
+            <li><span class="topic-dot"></span>SAP Certification Hub'da sample sorularla öz-değerlendirme</li>
+            <li><span class="topic-dot"></span>Zayıf konuları belirle → Mini sprint ile takviye et</li>
+            <li><span class="topic-dot"></span>Çoklu seçim soruları stratejisi — Elimination tekniği</li>
+            <li><span class="topic-dot"></span>Sınavda en çok çıkan keyword'ler: "Managed RAP", "CDS View Entity", "Released API", "Clean Core"</li>
+            <li><span class="topic-dot"></span>Pratik: Her faz için 10 soruluk mini quiz hazırla (Claude'a sor!)</li>
+          </ul>
+          <div class="cert-table-wrap" style="margin-top:16px;">
+            <table class="cert-table">
+              <thead>
+                <tr><th>Sınav Detayı</th><th>Bilgi</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Sınav Kodu</td><td>C_ABAPD_2507</td></tr>
+                <tr><td>Soru Sayısı</td><td>~80 soru</td></tr>
+                <tr><td>Süre</td><td>180 dakika</td></tr>
+                <tr><td>Geçme Notu</td><td>~%65</td></tr>
+                <tr><td>Format</td><td>Çoklu seçim, çoklu cevap</td></tr>
+                <tr><td>Ortam</td><td>Online veya Test Merkezi</td></tr>
+                <tr><td>Hazırlık Önerisi</td><td>SAP Learning Hub + Hands-on Trial System</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tasks-section" style="margin-top:16px;">
+            <div class="tasks-title">🔥 Son Hafta Aksiyon Planı</div>
+            <div class="task-item">
+              <div class="task-num">1</div>
+              <div class="task-text"><strong>RAP Tam Senaryo:</strong> Baştan sona eksiksiz bir RAP BO oluştur: CDS → BDEF (managed, draft) → Validation + Determination + 2 Action → Service Binding (UI + API). Süre kendin ölç — 3 saatin altına inene kadar tekrar et.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">2</div>
+              <div class="task-text"><strong>CDS Mimari Diyagramı:</strong> Öğrendiğin tüm CDS annotation kategorilerini ve VDM katmanlarını elle çiz (kağıda veya dijital). Çizerek öğrenmek sınavda akılda kalmasını sağlar.</div>
+            </div>
+            <div class="task-item">
+              <div class="task-num">3</div>
+              <div class="task-text"><strong>Claude'dan Quiz İste:</strong> Bu müfredatın herhangi bir faziyle ilgili benden 10 çoklu seçimli sınav sorusu iste. Hatalı cevaplarını incele, o konuya geri dön.</div>
+            </div>
+          </div>
+          <div class="mentor-tip" style="margin-top:16px;">
+            <div class="mentor-icon">👨‍🏫</div>
+            <div class="mentor-content">
+              <div class="mentor-label">MENTOR'UN SON TAVSİYESİ</div>
+              <div class="mentor-text">
+                15 yılda gördüğüm en başarılı ABAP öğrencileri şu formülü uyguladı: <strong>Anla → Yaz → Kır → Düzelt → Anlat</strong>. Bir konuyu öğrendin mi? Sil, sıfırdan yaz. Ardından kasıtlı olarak hata yap — ne olduğunu gör. Son adım: o konuyu sanki öğretiyormuşsun gibi anlat (bana anlat, günlüğüne yaz, sesli konuş). Anlatamazsan öğrenememişsindir. Bu müfredatı sadece okuma — her modülü tamamladıktan sonra bir sonrakine geçmeden önce, o modülün konusunu bana kendi kelimerinle anlat. Başarılar! 🎯
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:48px 0 0;color:var(--text3);font-size:13px;">
+    <div style="font-size:28px;margin-bottom:8px;">🏆</div>
+    <div>Bu müfredatı tamamladığında C_ABAPD_2507 sınavına hazır olacaksın.</div>
+    <div style="margin-top:6px;">Takıldığın her konuda kod örnekleri ve quiz için benden yardım isteyebilirsin.</div>
+  </div>
+
+</div>
+
+<script>
+function toggle(header) {
+  const card = header.parentElement;
+  card.classList.toggle('open');
+}
+function goToPhase(id, btn) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelectorAll('.phase-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
